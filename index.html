@@ -5,135 +5,37 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Flamengo News</title>
 
-<style>
-body {
-    margin: 0;
-    font-family: Arial;
-    background: #0d0d0d;
-    color: white;
-}
-
-/* HEADER */
-header {
-    background: #b30000;
-    padding: 15px;
-    text-align: center;
-    font-size: 22px;
-    font-weight: bold;
-}
-
-/* CARDS */
-.container {
-    padding: 15px;
-}
-
-.card {
-    background: #1a1a1a;
-    border-radius: 15px;
-    overflow: hidden;
-    margin-bottom: 20px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.5);
-}
-
-.card img {
-    width: 100%;
-    height: 180px;
-    object-fit: cover;
-}
-
-.card h2 {
-    color: #ff3333;
-    margin: 10px;
-}
-
-.card p {
-    margin: 10px;
-    color: #ccc;
-}
-
-/* BOTÃO FLUTUANTE */
-.chat-btn {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    background: red;
-    width: 70px;
-    height: 70px;
-    border-radius: 50%;
-    border: none;
-    cursor: pointer;
-    box-shadow: 0 0 10px red;
-}
-
-.chat-btn img {
-    width: 40px;
-}
-
-/* CHAT */
-.chat-box {
-    position: fixed;
-    bottom: 100px;
-    right: 20px;
-    width: 250px;
-    background: #1a1a1a;
-    border-radius: 10px;
-    display: none;
-    padding: 10px;
-}
-
-.chat-box input {
-    width: 100%;
-    padding: 8px;
-    margin-top: 10px;
-    border: none;
-    border-radius: 5px;
-}
-
-</style>
+<link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-<header>🔥 Flamengo News</header>
+<header>
+    🔴 Flamengo News
+</header>
 
-<div class="container">
+<section class="hero">
+    <img src="mascote.png" class="mascote">
+    <h2>Últimas notícias do Mengão</h2>
+</section>
 
-<div class="card">
-<img src="https://upload.wikimedia.org/wikipedia/commons/9/93/Flamengo_campeao_libertadores_2019.jpg">
-<h2>Destaque da rodada</h2>
-<p>Flamengo vence clássico e mostra força ofensiva.</p>
-</div>
+<section class="news" id="news"></section>
 
-<div class="card">
-<img src="https://upload.wikimedia.org/wikipedia/commons/0/0f/Maracana_2014.jpg">
-<h2>Jogo no Maracanã</h2>
-<p>Torcida lota estádio e empurra o time.</p>
-</div>
-
+<!-- BOTÃO FLUTUANTE -->
+<div class="chat-button" onclick="toggleChat()">
+    <img src="mascote.png">
 </div>
 
 <!-- CHAT -->
-<div class="chat-box" id="chat">
-<p>💬 Fala Nação! Digite algo:</p>
-<input type="text" placeholder="Escreve aí...">
+<div class="chat" id="chat">
+    <div class="chat-header">Chat Rubro-Negro</div>
+    <div class="chat-body" id="chatBody"></div>
+    <div class="chat-input">
+        <input type="text" id="inputMsg" placeholder="Digite...">
+        <button onclick="sendMessage()">➤</button>
+    </div>
 </div>
 
-<!-- BOTÃO -->
-<button class="chat-btn" onclick="abrirChat()">
-<img src="https://cdn-icons-png.flaticon.com/512/5968/5968830.png">
-</button>
-
-<script>
-function abrirChat() {
-    var chat = document.getElementById("chat");
-    
-    if (chat.style.display === "none") {
-        chat.style.display = "block";
-    } else {
-        chat.style.display = "none";
-    }
-}
-</script>
-
+<script src="script.js"></script>
 </body>
 </html>
