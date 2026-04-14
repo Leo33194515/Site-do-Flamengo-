@@ -8,128 +8,132 @@
 <style>
 body {
     margin: 0;
-    font-family: 'Segoe UI', Arial, sans-serif;
-    background: #0e0e0e;
-    color: #fff;
+    font-family: Arial;
+    background: #0d0d0d;
+    color: white;
 }
 
 /* HEADER */
 header {
-    background: #111;
-    border-bottom: 2px solid #c40000;
-    padding: 15px 20px;
+    background: #b30000;
+    padding: 15px;
+    text-align: center;
     font-size: 22px;
     font-weight: bold;
 }
 
-/* CONTAINER CENTRAL */
-.wrapper {
-    max-width: 1100px;
-    margin: auto;
-    padding: 20px;
-}
-
-/* GRID */
-.grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 25px;
-}
-
-/* CARD */
-.card {
-    background: #1a1a1a;
-    border-radius: 12px;
-    overflow: hidden;
-    transition: 0.25s;
-}
-
-.card:hover {
-    transform: translateY(-5px);
-}
-
-/* IMAGEM */
-.card img {
-    width: 100%;
-    height: 170px;
-    object-fit: cover;
-}
-
-/* TEXTO */
-.content {
+/* CARDS */
+.container {
     padding: 15px;
 }
 
-.content h3 {
-    margin: 0 0 10px;
-    font-size: 18px;
-    color: #ff3c3c;
+.card {
+    background: #1a1a1a;
+    border-radius: 15px;
+    overflow: hidden;
+    margin-bottom: 20px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
 }
 
-.content p {
-    font-size: 14px;
-    color: #bbb;
-    line-height: 1.4;
+.card img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
 }
 
-/* BOTÃO MASCOTE */
-.floating {
+.card h2 {
+    color: #ff3333;
+    margin: 10px;
+}
+
+.card p {
+    margin: 10px;
+    color: #ccc;
+}
+
+/* BOTÃO FLUTUANTE */
+.chat-btn {
     position: fixed;
     bottom: 20px;
     right: 20px;
-    background: #c40000;
+    background: red;
     width: 70px;
     height: 70px;
     border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 0 10px red;
 }
 
-.floating img {
-    width: 50px;
+.chat-btn img {
+    width: 40px;
 }
+
+/* CHAT */
+.chat-box {
+    position: fixed;
+    bottom: 100px;
+    right: 20px;
+    width: 250px;
+    background: #1a1a1a;
+    border-radius: 10px;
+    display: none;
+    padding: 10px;
+}
+
+.chat-box input {
+    width: 100%;
+    padding: 8px;
+    margin-top: 10px;
+    border: none;
+    border-radius: 5px;
+}
+
 </style>
-
 </head>
+
 <body>
 
-<header>Flamengo News</header>
+<header>🔥 Flamengo News</header>
 
-<div class="wrapper">
-    <div class="grid">
+<div class="container">
 
-        <div class="card">
-            <img src="https://picsum.photos/500/300?1">
-            <div class="content">
-                <h3>Vitória no clássico</h3>
-                <p>O Flamengo vence com autoridade e mantém boa fase na temporada.</p>
-            </div>
-        </div>
-
-        <div class="card">
-            <img src="https://picsum.photos/500/300?2">
-            <div class="content">
-                <h3>Destaque da rodada</h3>
-                <p>Atacante decide jogo e vira referência ofensiva do time.</p>
-            </div>
-        </div>
-
-        <div class="card">
-            <img src="https://picsum.photos/500/300?3">
-            <div class="content">
-                <h3>Mudanças táticas</h3>
-                <p>Treinador ajusta esquema e equipe apresenta evolução.</p>
-            </div>
-        </div>
-
-    </div>
+<div class="card">
+<img src="https://upload.wikimedia.org/wikipedia/commons/9/93/Flamengo_campeao_libertadores_2019.jpg">
+<h2>Destaque da rodada</h2>
+<p>Flamengo vence clássico e mostra força ofensiva.</p>
 </div>
 
-<div class="floating">
-    <img src="imagem.png">
+<div class="card">
+<img src="https://upload.wikimedia.org/wikipedia/commons/0/0f/Maracana_2014.jpg">
+<h2>Jogo no Maracanã</h2>
+<p>Torcida lota estádio e empurra o time.</p>
 </div>
+
+</div>
+
+<!-- CHAT -->
+<div class="chat-box" id="chat">
+<p>💬 Fala Nação! Digite algo:</p>
+<input type="text" placeholder="Escreve aí...">
+</div>
+
+<!-- BOTÃO -->
+<button class="chat-btn" onclick="abrirChat()">
+<img src="https://cdn-icons-png.flaticon.com/512/5968/5968830.png">
+</button>
+
+<script>
+function abrirChat() {
+    var chat = document.getElementById("chat");
+    
+    if (chat.style.display === "none") {
+        chat.style.display = "block";
+    } else {
+        chat.style.display = "none";
+    }
+}
+</script>
 
 </body>
 </html>
