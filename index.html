@@ -3,131 +3,133 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Flamengo Notícias</title>
+<title>Flamengo News</title>
 
 <style>
 body {
     margin: 0;
-    font-family: Arial, sans-serif;
-    background: linear-gradient(180deg, #8b0000, #1a0000);
-    color: white;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: #0e0e0e;
+    color: #fff;
 }
 
-/* TOPO */
+/* HEADER */
 header {
-    background: black;
-    padding: 15px;
-    text-align: center;
-    font-size: 24px;
+    background: #111;
+    border-bottom: 2px solid #c40000;
+    padding: 15px 20px;
+    font-size: 22px;
     font-weight: bold;
 }
 
-/* MASCOTE NO TOPO */
-.mascote {
-    position: fixed;
-    top: 10px;
-    left: 10px;
-    width: 60px;
-}
-
-/* NOTÍCIAS */
-.container {
+/* CONTAINER CENTRAL */
+.wrapper {
+    max-width: 1100px;
+    margin: auto;
     padding: 20px;
 }
 
-.noticia {
-    background: rgba(0,0,0,0.6);
-    padding: 15px;
-    margin-bottom: 15px;
-    border-left: 5px solid red;
-    border-radius: 10px;
+/* GRID */
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 25px;
 }
 
-/* BOTÃO FLUTUANTE */
-.botao {
+/* CARD */
+.card {
+    background: #1a1a1a;
+    border-radius: 12px;
+    overflow: hidden;
+    transition: 0.25s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+/* IMAGEM */
+.card img {
+    width: 100%;
+    height: 170px;
+    object-fit: cover;
+}
+
+/* TEXTO */
+.content {
+    padding: 15px;
+}
+
+.content h3 {
+    margin: 0 0 10px;
+    font-size: 18px;
+    color: #ff3c3c;
+}
+
+.content p {
+    font-size: 14px;
+    color: #bbb;
+    line-height: 1.4;
+}
+
+/* BOTÃO MASCOTE */
+.floating {
     position: fixed;
     bottom: 20px;
     right: 20px;
-    background: red;
-    border-radius: 50%;
+    background: #c40000;
     width: 70px;
     height: 70px;
+    border-radius: 50%;
     display: flex;
-    align-items: center;
     justify-content: center;
-    cursor: pointer;
-    box-shadow: 0 0 10px black;
+    align-items: center;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.5);
 }
 
-/* IMAGEM DO BOTÃO */
-.botao img {
+.floating img {
     width: 50px;
-}
-
-/* CAIXA DO CHAT */
-.chat {
-    position: fixed;
-    bottom: 100px;
-    right: 20px;
-    width: 250px;
-    background: black;
-    padding: 10px;
-    border-radius: 10px;
-    display: none;
 }
 </style>
 
 </head>
-
 <body>
 
-<header>🔴 Flamengo Notícias ⚫</header>
+<header>Flamengo News</header>
 
-<!-- MASCOTE (troca imagem.png pela sua imagem) -->
-<img src="imagem.png" class="mascote">
+<div class="wrapper">
+    <div class="grid">
 
-<div class="container">
+        <div class="card">
+            <img src="https://picsum.photos/500/300?1">
+            <div class="content">
+                <h3>Vitória no clássico</h3>
+                <p>O Flamengo vence com autoridade e mantém boa fase na temporada.</p>
+            </div>
+        </div>
 
-    <h2>Últimas Notícias</h2>
+        <div class="card">
+            <img src="https://picsum.photos/500/300?2">
+            <div class="content">
+                <h3>Destaque da rodada</h3>
+                <p>Atacante decide jogo e vira referência ofensiva do time.</p>
+            </div>
+        </div>
 
-    <div class="noticia">
-        <h3>Flamengo vence o clássico</h3>
-        <p>Vitória por 2x1 com destaque para Pedro.</p>
+        <div class="card">
+            <img src="https://picsum.photos/500/300?3">
+            <div class="content">
+                <h3>Mudanças táticas</h3>
+                <p>Treinador ajusta esquema e equipe apresenta evolução.</p>
+            </div>
+        </div>
+
     </div>
-
-    <div class="noticia">
-        <h3>Novo reforço chega</h3>
-        <p>Clube anuncia contratação para temporada 2026.</p>
-    </div>
-
-    <div class="noticia">
-        <h3>Torcida faz festa</h3>
-        <p>Maracanã lotado em mais um jogo histórico.</p>
-    </div>
-
 </div>
 
-<!-- CHAT -->
-<div class="chat" id="chatBox">
-    <p>Fala Nação! 🔴⚫</p>
-    <p>Quer saber mais notícias?</p>
-</div>
-
-<!-- BOTÃO COM MASCOTE -->
-<div class="botao" onclick="abrirChat()">
+<div class="floating">
     <img src="imagem.png">
 </div>
-
-<script>
-function abrirChat() {
-    var chat = document.getElementById("chatBox");
-    if (chat.style.display === "none") {
-        chat.style.display = "block";
-    } else {
-        chat.style.display = "none";
-    }
-}
-</script>
 
 </body>
 </html>
