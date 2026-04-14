@@ -1,0 +1,119 @@
+body {
+    margin: 0;
+    font-family: Arial;
+    background: #0a0a0a;
+    color: white;
+}
+
+/* HEADER */
+header {
+    background: linear-gradient(90deg, #c40000, #ff0000);
+    padding: 15px;
+    text-align: center;
+    font-size: 22px;
+    font-weight: bold;
+}
+
+/* HERO */
+.hero {
+    text-align: center;
+    padding: 20px;
+}
+
+.mascote {
+    width: 180px;
+}
+
+/* NEWS */
+.news {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+    padding: 20px;
+}
+
+.card {
+    background: #111;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 0 15px rgba(255,0,0,0.3);
+    transition: 0.3s;
+}
+
+.card:hover {
+    transform: scale(1.03);
+}
+
+.card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.card-content {
+    padding: 15px;
+}
+
+.card h3 {
+    color: #ff2e2e;
+}
+
+/* CHAT BUTTON */
+.chat-button {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    background: red;
+    box-shadow: 0 0 20px red;
+    cursor: pointer;
+}
+
+.chat-button img {
+    width: 100%;
+    border-radius: 50%;
+}
+
+/* CHAT */
+.chat {
+    position: fixed;
+    bottom: 100px;
+    right: 20px;
+    width: 300px;
+    height: 400px;
+    background: #111;
+    border-radius: 15px;
+    display: none;
+    flex-direction: column;
+}
+
+.chat-header {
+    background: red;
+    padding: 10px;
+    text-align: center;
+}
+
+.chat-body {
+    flex: 1;
+    padding: 10px;
+    overflow-y: auto;
+}
+
+.chat-input {
+    display: flex;
+}
+
+.chat-input input {
+    flex: 1;
+    padding: 10px;
+    border: none;
+}
+
+.chat-input button {
+    background: red;
+    border: none;
+    color: white;
+    padding: 10px;
+}
