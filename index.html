@@ -1,122 +1,24 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Site Flamengo</title>
-
-<style>
-body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background: linear-gradient(180deg, #b30000, #1a0000);
-    color: white;
-    text-align: center;
-}
-
-/* TOPO */
-header {
-    background: #a00000;
-    padding: 15px;
-    font-size: 24px;
-    font-weight: bold;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.4);
-}
-
-/* MASCOTE GRANDE */
-.mascote {
-    margin-top: 40px;
-}
-
-.mascote img {
-    width: 220px;
-}
-
-/* TEXTO */
-h1 {
-    margin-top: 20px;
-    font-size: 32px;
-}
-
-p {
-    font-size: 18px;
-    opacity: 0.9;
-}
-
-/* BOTÃO FLUTUANTE COM MASCOTE */
-.botao-fake {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    width: 90px;
-    height: 90px;
-    background: radial-gradient(circle, #ff0000, #800000);
-    border-radius: 50%;
-    box-shadow: 0 0 25px rgba(255,0,0,0.7);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: 0.3s;
-}
-
-.botao-fake:hover {
-    transform: scale(1.1);
-}
-
-/* IMAGEM DENTRO DO BOTÃO */
-.botao-fake img {
-    width: 70px;
-}
-
-/* CHAT FAKE */
-.chat {
-    position: fixed;
-    bottom: 120px;
-    right: 20px;
-    width: 250px;
-    background: #111;
-    border-radius: 10px;
-    padding: 10px;
-    display: none;
-}
-
-.chat p {
-    margin: 5px 0;
-}
-</style>
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flamengo</title>
+    
+    <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
 
-<header>
-    🔴 Site Flamengo
-</header>
+    <h1>Welcome to Flamengo</h1>
 
-<div class="mascote">
-    <img src="mascote.png">
-</div>
+    <!-- Mascote -->
+    <img src="imagem.png" alt="Mascote" class="mascote">
 
-<h1>Bem-vindo ao site do Flamengo!</h1>
-<p>O maior clube do Brasil 🇧🇷🔥</p>
-
-<!-- BOTÃO FLUTUANTE -->
-<div class="botao-fake" onclick="abrirChat()">
-    <img src="mascote.png">
-</div>
-
-<!-- CHAT -->
-<div class="chat" id="chat">
-    <p><b>🦅 Mascote:</b></p>
-    <p>Fala Nação! 🔴⚫</p>
-</div>
-
-<script>
-function abrirChat() {
-    let chat = document.getElementById("chat");
-    chat.style.display = chat.style.display === "block" ? "none" : "block";
-}
-</script>
+    <!-- Botão flutuante -->
+    <button class="floating-button">
+        <img src="imagem.png" alt="Mascote">
+    </button>
 
 </body>
 </html>
