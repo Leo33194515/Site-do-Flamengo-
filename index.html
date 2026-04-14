@@ -5,7 +5,51 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Flamengo Oficial</title>
 
-<style>
+<.chat-btn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+
+    background: radial-gradient(circle, #ff1a1a, #990000);
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    box-shadow: 
+        0 0 20px rgba(255, 0, 0, 0.8),
+        0 0 40px rgba(255, 0, 0, 0.5);
+
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+/* Mascote */
+.chat-btn img {
+    width: 65px;
+    height: 65px;
+    object-fit: contain;
+}
+
+/* Efeito ao passar o dedo */
+.chat-btn:hover {
+    transform: scale(1.1);
+}
+
+/* Animação leve pulsando */
+@keyframes pulse {
+    0% { box-shadow: 0 0 15px rgba(255,0,0,0.6); }
+    50% { box-shadow: 0 0 35px rgba(255,0,0,1); }
+    100% { box-shadow: 0 0 15px rgba(255,0,0,0.6); }
+}
+
+.chat-btn {
+    animation: pulse 2s infinite;
+}       >
 body {
     margin: 0;
     font-family: Arial, sans-serif;
