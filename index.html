@@ -1,1 +1,104 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Site Flamengo</title>
 
+<style>
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(#b30000, #1a0000);
+    color: white;
+    text-align: center;
+}
+
+/* TOPO */
+header {
+    background: #990000;
+    padding: 20px;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+/* CONTEÚDO */
+.container {
+    padding: 40px;
+}
+
+h1 {
+    font-size: 36px;
+}
+
+/* BOTÃO FLUTUANTE */
+.chat-btn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: #ff0000;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    font-size: 24px;
+    cursor: pointer;
+    box-shadow: 0 0 10px black;
+}
+
+/* CAIXA DO CHAT */
+.chat-box {
+    position: fixed;
+    bottom: 90px;
+    right: 20px;
+    width: 300px;
+    background: #111;
+    border-radius: 10px;
+    display: none;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+/* TOPO CHAT */
+.chat-header {
+    background: #cc0000;
+    padding: 10px;
+    font-weight: bold;
+}
+
+/* MENSAGENS */
+.chat-messages {
+    height: 200px;
+    overflow-y: auto;
+    padding: 10px;
+    font-size: 14px;
+}
+
+.msg {
+    margin: 5px 0;
+}
+
+.user {
+    text-align: right;
+}
+
+.bot {
+    text-align: left;
+}
+
+/* INPUT */
+.chat-input {
+    display: flex;
+}
+
+.chat-input input {
+    flex: 1;
+    border: none;
+    padding: 10px;
+}
+
+.chat-input button {
+    background: red;
+    color: white;
+    border
