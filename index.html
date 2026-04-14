@@ -3,138 +3,128 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Flamengo Oficial</title>
+<title>Flamengo Notícias</title>
 
 <style>
 body {
     margin: 0;
     font-family: Arial, sans-serif;
-    background: linear-gradient(180deg, #b30000, #1a0000);
+    background: linear-gradient(180deg, #8b0000, #1a0000);
     color: white;
-    text-align: center;
 }
 
 /* TOPO */
 header {
-    background: #8b0000;
+    background: black;
     padding: 15px;
-    font-size: 22px;
+    text-align: center;
+    font-size: 24px;
     font-weight: bold;
 }
 
-/* CONTEÚDO */
-.container {
-    padding: 30px;
-}
-
-h1 {
-    font-size: 40px;
-    margin-bottom: 10px;
-}
-
-p {
-    font-size: 18px;
-    opacity: 0.9;
-}
-
-/* MASCOTE GRANDE */
+/* MASCOTE NO TOPO */
 .mascote {
-    width: 280px;
-    margin-top: 20px;
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    width: 60px;
+}
+
+/* NOTÍCIAS */
+.container {
+    padding: 20px;
+}
+
+.noticia {
+    background: rgba(0,0,0,0.6);
+    padding: 15px;
+    margin-bottom: 15px;
+    border-left: 5px solid red;
+    border-radius: 10px;
 }
 
 /* BOTÃO FLUTUANTE */
-.chat-btn {
+.botao {
     position: fixed;
     bottom: 20px;
     right: 20px;
-    width: 75px;
-    height: 75px;
-    border-radius: 50%;
-    border: none;
     background: red;
-    box-shadow: 0 0 15px rgba(0,0,0,0.5);
+    border-radius: 50%;
+    width: 70px;
+    height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     cursor: pointer;
-    overflow: hidden;
-    transition: 0.3s;
+    box-shadow: 0 0 10px black;
 }
 
-.chat-btn img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.chat-btn:hover {
-    transform: scale(1.1);
-    background: #ff1a1a;
+/* IMAGEM DO BOTÃO */
+.botao img {
+    width: 50px;
 }
 
 /* CAIXA DO CHAT */
-.chat-box {
+.chat {
     position: fixed;
-    bottom: 110px;
+    bottom: 100px;
     right: 20px;
-    width: 260px;
-    background: #222;
-    border-radius: 10px;
+    width: 250px;
+    background: black;
     padding: 10px;
+    border-radius: 10px;
     display: none;
-}
-
-.chat-box p {
-    font-size: 14px;
 }
 </style>
 
 </head>
-<body><h2>Últimas Notícias</h2>
 
-<div class="noticia">
-  <h3>Flamengo vence o Fluminense</h3>
-  <p>Pedro marca dois gols e garante vitória por 2x1 no clássico.</p>
-</div>
+<body>
 
-<div class="noticia">
-  <h3>Samuel Lino se destaca</h3>
-  <p>Jogador vira líder em assistências do Flamengo em 2026.</p>
-</div>
+<header>🔴 Flamengo Notícias ⚫</header>
 
-<div class="noticia">
-  <h3>Expulsões preocupam</h3>
-  <p>Flamengo tem aumento de cartões vermelhos nos últimos jogos.</p>
-</div></body>
-
-<header>
-🔴⚫ Flamengo Oficial
-</header>
+<!-- MASCOTE (troca imagem.png pela sua imagem) -->
+<img src="imagem.png" class="mascote">
 
 <div class="container">
-    <h1>Bem-vindo, Nação!</h1>
-    <p>Fique por dentro de tudo do Mengão 🔥</p>
 
-    <!-- MASCOTE GRANDE -->
-    <img src="mascote.png" class="mascote">
+    <h2>Últimas Notícias</h2>
+
+    <div class="noticia">
+        <h3>Flamengo vence o clássico</h3>
+        <p>Vitória por 2x1 com destaque para Pedro.</p>
+    </div>
+
+    <div class="noticia">
+        <h3>Novo reforço chega</h3>
+        <p>Clube anuncia contratação para temporada 2026.</p>
+    </div>
+
+    <div class="noticia">
+        <h3>Torcida faz festa</h3>
+        <p>Maracanã lotado em mais um jogo histórico.</p>
+    </div>
+
+</div>
+
+<!-- CHAT -->
+<div class="chat" id="chatBox">
+    <p>Fala Nação! 🔴⚫</p>
+    <p>Quer saber mais notícias?</p>
 </div>
 
 <!-- BOTÃO COM MASCOTE -->
-<button class="chat-btn" onclick="abrirChat()">
-    <img src="mascote.png">
-</button>
-
-<!-- CHAT -->
-<div class="chat-box" id="chat">
-    <p><b>Mascote:</b> Fala Nação! 🔴⚫</p>
-    <p>Em breve teremos novidades aqui!</p>
+<div class="botao" onclick="abrirChat()">
+    <img src="imagem.png">
 </div>
 
 <script>
 function abrirChat() {
-    var chat = document.getElementById("chat");
-    if (chat.style.display === "block") {
-        chat.style.display = "none";
-    } else {
+    var chat = document.getElementById("chatBox");
+    if (chat.style.display === "none") {
         chat.style.display = "block";
+    } else {
+        chat.style.display = "none";
     }
 }
 </script>
