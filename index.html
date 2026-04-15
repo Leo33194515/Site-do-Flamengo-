@@ -25,18 +25,24 @@ body {
 /* HERO */
 .hero {
   text-align:center;
-  padding:40px 20px;
-  background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://source.unsplash.com/1600x900/?flamengo');
+  padding:50px 20px;
+  background: linear-gradient(rgba(0,0,0,0.75), rgba(0,0,0,0.75)), #000;
   background-size: cover;
+  position: relative;
 }
-.hero img {
-  width:180px;
-  filter: drop-shadow(0 0 10px gold);
+.hero img.logo {
+  width: 180px;
+  margin-bottom: 15px;
+}
+.hero img.mascote {
+  width: 220px;
+  margin: 20px 0;
+  filter: drop-shadow(0 10px 15px rgba(200, 16, 46, 0.6));
 }
 
 /* NEWS */
 .news-section {
-  padding:20px;
+  padding:30px 20px;
   max-width: 900px;
   margin: 0 auto;
 }
@@ -46,29 +52,45 @@ body {
   margin-bottom:15px;
   border-left:5px solid #c8102e;
   border-radius: 8px;
-  transition: transform 0.2s;
+  transition: all 0.3s;
 }
 .news-card:hover {
   transform: translateX(10px);
+  box-shadow: 0 5px 15px rgba(200,16,46,0.3);
 }
 
-/* CHAT */
-.chat-toggle {
+/* BOTÕES FLUTUANTES */
+.btn-fixo {
   position:fixed;
   bottom:20px;
-  right:20px;
   width:65px;
   height:65px;
   border-radius:50%;
-  background:#c8102e;
-  color:white;
-  font-size:28px;
   border:none;
-  box-shadow: 0 4px 15px rgba(200,16,46,0.6);
+  font-size:28px;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.7);
   cursor: pointer;
   z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
 }
 
+#chatToggle {
+  background:#c8102e;
+  color:white;
+  right: 100px;
+}
+
+#ingressoBtn {
+  background:#009c3b;
+  color:white;
+  right: 20px;
+  font-size: 24px;
+}
+
+/* CHAT */
 .chat-widget {
   position:fixed;
   bottom:90px;
@@ -81,7 +103,7 @@ body {
   flex-direction:column;
   box-shadow: 0 10px 30px rgba(0,0,0,0.8);
   overflow: hidden;
-  z-index: 1000;
+  z-index: 1001;
 }
 
 .chat-header {
@@ -107,13 +129,11 @@ body {
 }
 .msg.user {
   background:#c8102e;
-  align-self: flex-end;
   margin-left: auto;
   border-bottom-right-radius: 4px;
 }
 .msg.bot {
   background:#333;
-  align-self: flex-start;
   margin-right: auto;
   border-bottom-left-radius: 4px;
 }
@@ -150,7 +170,8 @@ body {
 </header>
 
 <section class="hero">
-  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f1/CR_Flamengo_logo.svg/512px-CR_Flamengo_logo.svg.png" alt="Logo Flamengo">
+  <img src="mascote.png" alt="Mascote Flamengo" class="mascote">
+  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f1/CR_Flamengo_logo.svg/512px-CR_Flamengo_logo.svg.png" alt="Logo Flamengo" class="logo">
   <h2>Bem-vindo ao Mengão!</h2>
   <p>O Maior do Brasil 🔥</p>
 </section>
@@ -160,8 +181,15 @@ body {
   <div id="newsList"></div>
 </section>
 
-<button class="chat-toggle" id="chatToggle">💬</button>
+<!-- Botão Comprar Ingresso -->
+<a href="https://www.flamengo.com.br/ingressos" target="_blank" id="ingressoBtn" class="btn-fixo" title="Comprar Ingresso">
+  🎟️
+</a>
 
+<!-- Botão Chat -->
+<button class="btn-fixo" id="chatToggle">💬</button>
+
+<!-- Chat Widget -->
 <div class="chat-widget" id="chatWidget">
   <div class="chat-header">🦅 Chat do Flamengo</div>
   <div class="chat-body" id="chatBody"></div>
@@ -176,7 +204,7 @@ body {
 const noticias = [
   {
     titulo: "Flamengo vence o Fluminense e assume a liderança do Carioca",
-    texto: "Em clássico disputado no Maracanã, o Mengão venceu por 2x1 com gols de Pedro e Arrascaeta. Ótima atuação do time!",
+    texto: "Em clássico disputado no Maracanã, o Mengão venceu por 2x1 com gols de Pedro e Arrascaeta.",
     data: "Há 2 horas"
   },
   {
@@ -186,7 +214,7 @@ const noticias = [
   },
   {
     titulo: "Flamengo anuncia renovação de contrato com Giorgian de Arrascaeta",
-    texto: "O uruguaio, ídolo da torcida, assinou até dezembro de 2028. Valorização merecida!",
+    texto: "O uruguaio, ídolo da torcida, assinou até dezembro de 2028.",
     data: "Ontem"
   }
 ];
@@ -212,36 +240,29 @@ const chatInput = document.getElementById('chatInput');
 const btnSend = document.getElementById('btnSend');
 
 chatToggle.onclick = () => {
-  chatWidget.style.display = chatWidget.style.display === 'flex' ? 'none' : 'flex';
+  chatWidget.style.display = (chatWidget.style.display === 'flex') ? 'none' : 'flex';
   if (chatWidget.style.display === 'flex') chatInput.focus();
 }
 
-// Respostas inteligentes do Bot
 function getBotResponse(texto) {
   const msg = texto.toLowerCase();
 
   if (msg.includes("oi") || msg.includes("olá") || msg.includes("boa")) 
-    return "Olá, Mengão! Como vai, nação rubro-negra? 🔥";
+    return "Olá, nação rubro-negra! Tudo bem? Como posso ajudar hoje? 🔥";
 
   if (msg.includes("noticia") || msg.includes("notícia"))
-    return "Temos várias notícias quentes hoje! Quer que eu te conte as últimas?";
+    return "Temos várias notícias quentes! Quer que eu te conte as últimas do Mengão?";
 
   if (msg.includes("melhor") || msg.includes("maior"))
-    return "O Flamengo é o maior clube do Brasil e da América Latina! Nação gigante! 🔴⚫";
+    return "O Flamengo é o maior clube do Brasil e da América! Nação gigante! 🔴⚫";
 
-  if (msg.includes("título") || msg.includes("libertadores") || msg.includes("brasileirão"))
-    return "O Mengão já conquistou 3 Libertadores, 7 Brasileirões e é o clube com mais torcedores do Brasil!";
+  if (msg.includes("ingresso") || msg.includes("comprar"))
+    return "Para comprar ingressos, clique no botão verde 🎟️ que está na tela!";
 
-  if (msg.includes("pedro") || msg.includes("arrascaeta") || msg.includes("de la cruz"))
-    return "Pedro e Arrascaeta são monstros! Ídolos absolutos da torcida.";
+  if (msg.includes("pedro") || msg.includes("arrascaeta"))
+    return "Pedro e Arrascaeta são monstros sagrados do Mengão!";
 
-  if (msg.includes("tite"))
-    return "Tite é o nosso treinador atual. Tem feito um ótimo trabalho com o elenco.";
-
-  if (msg.includes("maracanã"))
-    return "O Maracanã é a nossa casa! Onde o Flamengo faz a torcida vibrar!";
-
-  return "Flamengo é gigante, irmão! 🔴⚫ O que mais você quer saber sobre o Mengão?";
+  return "Flamengo é gigante, irmão! 🔴⚫ O que mais você quer saber sobre o nosso time?";
 }
 
 function addMsg(text, isUser = false) {
@@ -252,14 +273,12 @@ function addMsg(text, isUser = false) {
   chatBody.scrollTop = chatBody.scrollHeight;
 }
 
-// Enviar mensagem
 function sendMessage() {
   const text = chatInput.value.trim();
   if (!text) return;
 
   addMsg(text, true);
 
-  // Resposta do bot com pequeno delay (mais natural)
   setTimeout(() => {
     const resposta = getBotResponse(text);
     addMsg(resposta);
@@ -268,17 +287,15 @@ function sendMessage() {
   chatInput.value = "";
 }
 
-// Eventos
 btnSend.onclick = sendMessage;
-
 chatInput.addEventListener("keypress", (e) => {
   if (e.key === "Enter") sendMessage();
 });
 
-// Mensagem inicial do bot
+// Mensagem inicial do chat
 window.onload = () => {
   setTimeout(() => {
-    addMsg("Bem-vindo ao Chat do Flamengo! 💬\nPergunte qualquer coisa sobre o Mengão!");
+    addMsg("Bem-vindo ao Chat do Flamengo! 💬\nPode perguntar qualquer coisa sobre o Mengão!");
   }, 800);
 }
 </script>
