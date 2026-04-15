@@ -10,48 +10,27 @@ body{
   background:#111;
   color:#fff;
   font-family:Arial;
-  margin:0;
-  padding:20px;
+  text-align:center;
 }
 
 h1{
   color:red;
 }
 
-#newsList{
+#news{
   margin-top:20px;
 }
 
-.news-item{
-  margin-bottom:15px;
-  padding:10px;
-  border-bottom:1px solid #333;
-}
-
-.news-item a{
-  color:#ff0000;
-  text-decoration:none;
-  font-size:16px;
-}
-
-.chat-box{
-  margin-top:30px;
-  border:1px solid #333;
+.card{
+  background:#222;
+  margin:10px;
+  padding:15px;
   border-radius:10px;
-  padding:10px;
 }
 
-input{
-  width:70%;
-  padding:10px;
-  border:none;
-}
-
-button{
-  padding:10px;
-  background:red;
-  color:#fff;
-  border:none;
+a{
+  color:#ff4444;
+  text-decoration:none;
 }
 </style>
 </head>
@@ -59,51 +38,42 @@ button{
 <body>
 
 <h1>📰 Notícias do Flamengo</h1>
+<p id="status">Carregando...</p>
 
-<div id="newsList">Carregando...</div>
-
-<div class="chat-box">
-  <input type="text" placeholder="Pergunta...">
-  <button>Enviar</button>
-</div>
+<div id="news"></div>
 
 <script>
-const newsList = document.getElementById("newsList");
-
-async function carregarNoticias() {
-  try {
-    const url = "https://api.allorigins.win/get?url=" + encodeURIComponent(
-      "https://news.google.com/rss/search?q=Flamengo&hl=pt-BR&gl=BR&ceid=BR:pt-419"
-    );
+async function carregarNoticias(){
+  try{
+    const url = "https://api.allorigins.win/raw?url=https://globoesporte.globo.com/rss/futebol/times/flamengo/";
 
     const res = await fetch(url);
-    const data = await res.json();
+    const text = await res.text();
 
     const parser = new DOMParser();
-    const xml = parser.parseFromString(data.contents, "text/xml");
+    const xml = parser.parseFromString(text, "text/xml");
 
     const items = xml.querySelectorAll("item");
+    const newsDiv = document.getElementById("news");
 
-    newsList.innerHTML = "";
+    document.getElementById("status").innerText = "";
 
     items.forEach((item, i) => {
-      if (i >= 3) return;
+      if(i < 3){
+        const title = item.querySelector("title").textContent;
+        const link = item.querySelector("link").textContent;
 
-      const titulo = item.querySelector("title").textContent;
-      const link = item.querySelector("link").textContent;
-
-      const div = document.createElement("div");
-      div.className = "news-item";
-      div.innerHTML = `
-        <a href="${link}" target="_blank">${titulo}</a>
-      `;
-
-      newsList.appendChild(div);
+        newsDiv.innerHTML += `
+          <div class="card">
+            <h3>${title}</h3>
+            <a href="${link}" target="_blank">Ler mais</a>
+          </div>
+        `;
+      }
     });
 
-  } catch (erro) {
-    newsList.innerHTML = "Erro ao carregar notícias 😢";
-    console.error(erro);
+  }catch(e){
+    document.getElementById("status").innerText = "Erro ao carregar notícias 😡";
   }
 }
 
