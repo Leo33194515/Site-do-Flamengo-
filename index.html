@@ -1,411 +1,107 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Flamengo - Site Oficial do Mengão</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Anton&family=Roboto:wght@400;700&display=swap');
-        
-        :root {
-            --flamengo-red: #C8102E;
-            --flamengo-black: #1A1A1A;
-        }
-        
-        * {
-            transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
-            transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-            transition-duration: 150ms;
-        }
-        
-        .tail-container * {
-            font-family: 'Roboto', sans-serif;
-        }
-        
-        .logo-font {
-            font-family: 'Anton', sans-serif;
-        }
+<script>
+const chatWidget  = document.getElementById('chatWidget');
+const chatToggle  = document.getElementById('chatToggle');
+const chatBody    = document.getElementById('chatBody');
+const chatInput   = document.getElementById('chatInput');
+const btnSend     = document.getElementById('btnSend');
+const newsList    = document.getElementById('newsList');
 
-        /* Mascote flutuante no hero */
-        .mascote-float {
-            animation: float 3s ease-in-out infinite;
-        }
-        
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-20px); }
-        }
+let isMinimized = false;
 
-        /* Rolagem automática do ticker de notícias */
-        .ticker {
-            overflow: hidden;
-            white-space: nowrap;
-        }
-        .ticker-content {
-            display: inline-block;
-            animation: ticker-slide 30s linear infinite;
-        }
-        @keyframes ticker-slide {
-            0% { transform: translateX(100%); }
-            100% { transform: translateX(-100%); }
-        }
+/* =========================
+   📰 NOTÍCIAS AUTOMÁTICAS
+========================= */
+const API_KEY = "3ca9e5d8a09040d0a4ea54f4efc6ed8d";
 
-        /* Chatbot */
-        .chat-window {
-            animation: chatPop 0.3s ease-out;
-        }
-        
-        .message {
-            max-width: 75%;
-            padding: 12px 16px;
-            border-radius: 20px;
-            margin-bottom: 12px;
-        }
-        
-        .user-msg {
-            background-color: #C8102E;
-            color: white;
-            border-bottom-right-radius: 4px;
-            align-self: flex-end;
-        }
-        
-        .bot-msg {
-            background-color: #1A1A1A;
-            color: white;
-            border-bottom-left-radius: 4px;
-            align-self: flex-start;
-        }
-        
-        /* Cards de notícias */
-        .news-card {
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        .news-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 25px 50px -12px rgb(200 16 46);
-        }
-    </style>
-</head>
-<body class="tail-container bg-[#1A1A1A] text-white">
-    <!-- NAVBAR -->
-    <nav class="bg-[#C8102E] shadow-lg sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-            <div class="flex items-center gap-3">
-                <div class="w-10 h-10 bg-white rounded-full flex items-center justify-center text-[#C8102E] text-3xl">🔴</div>
-                <h1 class="logo-font text-3xl tracking-tighter">FLAMENGO</h1>
-            </div>
-            
-            <div class="hidden md:flex items-center gap-8 text-lg font-medium">
-                <a href="#home" class="hover:text-black">Início</a>
-                <a href="#mascote" class="hover:text-black">Mascote</a>
-                <a href="#noticias" class="hover:text-black">Notícias</a>
-                <a href="#chat" onclick="toggleChat()" class="hover:text-black">Chat com o Mascote</a>
-            </div>
-            
-            <div class="flex items-center gap-4">
-                <a href="https://www.flamengo.com.br" target="_blank" 
-                   class="bg-black hover:bg-white hover:text-black px-6 py-2 rounded-full text-sm font-bold flex items-center gap-2">
-                    <span>🏟️</span>
-                    <span>INGRESSOS</span>
-                </a>
-                <button onclick="toggleChat()" 
-                        class="md:hidden bg-black text-white px-5 py-2 rounded-2xl flex items-center gap-2 font-bold">
-                    💬 CHAT
-                </button>
-            </div>
-        </div>
-    </nav>
+async function carregarNoticias() {
+  try {
+    const res = await fetch(`https://gnews.io/api/v4/search?q=flamengo&lang=pt&max=3&token=${API_KEY}`);
+    const data = await res.json();
 
-    <!-- TICKER DE ROLAGEM AUTOMÁTICA -->
-    <div class="bg-black py-2 border-b border-[#C8102E]">
-        <div class="ticker max-w-7xl mx-auto px-6 text-sm font-medium flex items-center">
-            <span class="bg-[#C8102E] text-white px-4 py-1 mr-4 font-bold uppercase tracking-widest">AO VIVO</span>
-            <div class="ticker-content flex items-center gap-8 text-white">
-                🔥 Flamengo vence Fluminense com 2 golaços de Pedro e assume vice-liderança do Brasileirão • 
-                🏆 Pedro eleito Melhor da 11ª rodada no Prêmio Bola de Prata 2026 • 
-                ⚪ Flamengo lança "Manto 1 Branco" – novo uniforme reserva 2026 • 
-                🔥 Flamengo vence Fluminense com 2 golaços de Pedro e assume vice-liderança do Brasileirão • 
-                🏆 Pedro eleito Melhor da 11ª rodada no Prêmio Bola de Prata 2026 • 
-                ⚪ Flamengo lança "Manto 1 Branco" – novo uniforme reserva 2026
-            </div>
-        </div>
-    </div>
+    if (!data.articles) throw "erro";
 
-    <!-- HERO / INÍCIO -->
-    <section id="home" class="relative bg-gradient-to-br from-[#C8102E] to-[#1A1A1A] py-16 overflow-hidden">
-        <div class="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
-            <div class="space-y-8">
-                <div class="inline-flex items-center bg-black/30 backdrop-blur-md px-6 py-2 rounded-3xl text-sm font-bold gap-2">
-                    <div class="w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
-                    MENGÃO NA VEIA!
-                </div>
-                
-                <h1 class="logo-font text-7xl md:text-8xl leading-none tracking-tighter">
-                    BEM-VINDO AO<br>FLAMENGO
-                </h1>
-                
-                <p class="text-2xl max-w-md text-white/90">
-                    O maior do Brasil. Aqui o Mengão pulsa forte. 
-                    <span class="font-bold text-3xl">🔴⚫</span>
-                </p>
-                
-                <div class="flex gap-4">
-                    <a href="#noticias" 
-                       class="bg-white text-[#C8102E] hover:bg-black hover:text-white px-10 py-4 rounded-2xl font-bold text-xl flex items-center gap-3">
-                        VER NOTÍCIAS
-                        <span class="text-3xl">→</span>
-                    </a>
-                    <button onclick="toggleChat()" 
-                            class="border-2 border-white hover:bg-white hover:text-[#C8102E] px-8 py-4 rounded-2xl font-bold text-xl">
-                        FALAR COM O MASCOTE
-                    </button>
-                </div>
-                
-                <div class="flex items-center gap-6 text-sm">
-                    <div>⭐ 6x Campeão Brasileiro</div>
-                    <div>⭐ 3x Libertadores</div>
-                    <div class="text-green-400">• AO VIVO AGORA •</div>
-                </div>
-            </div>
-            
-            <!-- IMAGEM DO MASCOTE (você precisa salvar a imagem que enviou como "mascote.png") -->
-            <div class="flex justify-center">
-                <img src="mascote.png" 
-                     alt="Mascote do Flamengo - Águia Rubro-Negra"
-                     class="mascote-float w-full max-w-md drop-shadow-2xl">
-            </div>
-        </div>
-        
-        <!-- Efeito de bolas rubro-negras flutuando -->
-        <div class="absolute top-10 right-10 text-6xl opacity-20 animate-float">🔴</div>
-        <div class="absolute bottom-20 left-20 text-5xl opacity-20 animate-float" style="animation-delay: 1s;">⚫</div>
-    </section>
+    newsList.innerHTML = data.articles.map(n => 
+      `<div class="news-card">
+        <h4>${n.title}</h4>
+        <p>${n.description || ''}</p>
+        <a href="${n.url}" target="_blank">Ler mais</a>
+      </div>`
+    ).join('');
 
-    <!-- SEÇÃO MASCOTE -->
-    <section id="mascote" class="max-w-7xl mx-auto px-6 py-20">
-        <div class="text-center mb-12">
-            <span class="px-6 py-2 bg-[#C8102E] text-white rounded-3xl text-sm font-bold">NOVO MASCOTE OFICIAL</span>
-            <h2 class="text-5xl font-bold mt-4">Conheça a Águia Rubro-Negra!</h2>
-            <p class="text-xl text-white/70 mt-3">O símbolo da garra, da força e do amor pelo Mengão. Ele está pronto para voar alto com você!</p>
-        </div>
-        
-        <div class="flex justify-center">
-            <div class="bg-white/10 backdrop-blur-lg p-8 rounded-3xl max-w-2xl w-full text-center">
-                <img src="mascote.png" 
-                     alt="Mascote do Flamengo"
-                     class="mx-auto w-80 drop-shadow-2xl">
-                <div class="mt-8">
-                    <h3 class="text-4xl font-bold text-[#C8102E]">ÁGUIA RUBRO-NEGRA</h3>
-                    <p class="text-lg mt-2">Sempre de peito aberto, com o manto sagrado e o bico pronto para celebrar cada gol do Flamengo! 🦅🔴⚫</p>
-                </div>
-            </div>
-        </div>
-    </section>
+  } catch (e) {
+    newsList.innerHTML = '<div class="empty-news">Erro ao carregar notícias 😢</div>';
+  }
+}
 
-    <!-- SEÇÃO NOTÍCIAS (3 últimas notícias reais - atualizadas em 14/04/2026) -->
-    <section id="noticias" class="bg-black py-20">
-        <div class="max-w-7xl mx-auto px-6">
-            <div class="flex justify-between items-end mb-12">
-                <h2 class="text-5xl font-bold">Últimas Notícias do Mengão</h2>
-                <a href="https://ge.globo.com/futebol/times/flamengo/" target="_blank" 
-                   class="text-[#C8102E] font-bold flex items-center gap-2 hover:gap-4">
-                    VER TODAS NO GE <span class="text-2xl">→</span>
-                </a>
-            </div>
-            
-            <div class="grid md:grid-cols-3 gap-8">
-                <!-- Notícia 1 -->
-                <div class="news-card bg-white/5 border border-white/10 rounded-3xl p-6 flex flex-col h-full">
-                    <div class="text-[#C8102E] text-sm font-bold mb-3">13/04/2026 • Brasileirão</div>
-                    <h3 class="text-2xl font-bold leading-tight">Flamengo vence Fluminense com dois golaços de Pedro e assume vice-liderança</h3>
-                    <p class="mt-4 text-white/80 flex-1">O Mengão atropelou o rival por 2 a 0 no Maracanã. Pedro brilhou e agora o Rubro-Negro está colado no topo da tabela.</p>
-                    <div class="mt-8 pt-6 border-t border-white/10 text-xs flex justify-between items-center">
-                        <span class="font-medium">ESPN • GE</span>
-                        <button onclick="window.open('https://www.espn.com.br/futebol/time/_/id/819/flamengo','_blank')" 
-                                class="text-[#C8102E] text-sm font-bold">LER MAIS →</button>
-                    </div>
-                </div>
-                
-                <!-- Notícia 2 -->
-                <div class="news-card bg-white/5 border border-white/10 rounded-3xl p-6 flex flex-col h-full">
-                    <div class="text-[#C8102E] text-sm font-bold mb-3">13/04/2026 • Prêmio Bola de Prata</div>
-                    <h3 class="text-2xl font-bold leading-tight">Pedro é o melhor da 11ª rodada do Brasileirão 2026</h3>
-                    <p class="mt-4 text-white/80 flex-1">O artilheiro do Mengão foi eleito o craque da rodada com dois gols e uma atuação histórica no clássico contra o Flu.</p>
-                    <div class="mt-8 pt-6 border-t border-white/10 text-xs flex justify-between items-center">
-                        <span class="font-medium">ESPN</span>
-                        <button onclick="window.open('https://www.espn.com.br/futebol/time/_/id/819/flamengo','_blank')" 
-                                class="text-[#C8102E] text-sm font-bold">LER MAIS →</button>
-                    </div>
-                </div>
-                
-                <!-- Notícia 3 -->
-                <div class="news-card bg-white/5 border border-white/10 rounded-3xl p-6 flex flex-col h-full">
-                    <div class="text-[#C8102E] text-sm font-bold mb-3">10/04/2026 • Uniforme</div>
-                    <h3 class="text-2xl font-bold leading-tight">Flamengo lança "Manto 1 Branco" – novo uniforme reserva para 2026</h3>
-                    <p class="mt-4 text-white/80 flex-1">O clube aposentou o uniforme 2 e batizou a camisa branca como "Manto 1 Branco". A Nação transforma qualquer estádio em casa!</p>
-                    <div class="mt-8 pt-6 border-t border-white/10 text-xs flex justify-between items-center">
-                        <span class="font-medium">CNN Brasil</span>
-                        <button onclick="window.open('https://www.cnnbrasil.com.br/esportes/futebol/flamengo/flamengo-lanca-uniforme-para-2026-e-batiza-camisa-reserva-com-novo-nome/','_blank')" 
-                                class="text-[#C8102E] text-sm font-bold">LER MAIS →</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+/* =========================
+   🤖 CHAT MELHORADO
+========================= */
 
-    <!-- CHAT BOT FAKE -->
-    <div onclick="if(event.target.id === 'chat-backdrop') toggleChat()" 
-         id="chat-backdrop"
-         class="hidden fixed inset-0 bg-black/70 z-[9999] flex items-end md:items-center justify-center">
-        
-        <div id="chat-window" 
-             onclick="event.stopImmediatePropagation()"
-             class="chat-window bg-white w-full max-w-lg md:rounded-3xl rounded-t-3xl md:mb-0 mb-0 h-[80vh] md:h-auto flex flex-col shadow-2xl">
-            
-            <!-- Header do chat -->
-            <div class="bg-[#C8102E] text-white p-5 flex items-center gap-4 rounded-t-3xl">
-                <img src="mascote.png" alt="Mascote" class="w-12 h-12 rounded-2xl">
-                <div>
-                    <h3 class="font-bold text-xl">Águia Rubro-Negra</h3>
-                    <p class="text-xs opacity-75">Online • Pronto pra falar de Mengão!</p>
-                </div>
-                <button onclick="toggleChat()" class="ml-auto text-3xl leading-none">×</button>
-            </div>
-            
-            <!-- Área de mensagens -->
-            <div id="chat-messages" class="flex-1 p-6 overflow-y-auto bg-gray-50 space-y-4 text-black">
-                <!-- Mensagens são adicionadas via JS -->
-                <div class="bot-msg message">
-                    E aí, Nação?! 🦅🔴⚫<br>Eu sou o Mascote do Flamengo! O que você quer saber hoje? Gols, títulos ou só bater papo rubro-negro?
-                </div>
-            </div>
-            
-            <!-- Input -->
-            <div class="p-4 border-t bg-white flex gap-3">
-                <input id="chat-input" 
-                       type="text" 
-                       placeholder="Digite sua mensagem pro Mascote..."
-                       onkeydown="if(event.key === 'Enter') sendMessage()"
-                       class="flex-1 bg-gray-100 rounded-3xl px-6 py-4 text-black focus:outline-none">
-                <button onclick="sendMessage()" 
-                        class="bg-[#C8102E] text-white w-12 h-12 flex items-center justify-center rounded-2xl text-2xl">
-                    ↑
-                </button>
-            </div>
-        </div>
-    </div>
+btnSend.addEventListener('click', sendMessage);
+chatInput.addEventListener('keydown', e => {
+  if(e.key === 'Enter') sendMessage();
+});
 
-    <!-- FOOTER -->
-    <footer class="bg-black py-12">
-        <div class="max-w-7xl mx-auto px-6 text-center">
-            <p class="text-3xl logo-font mb-2">FLAMENGO</p>
-            <p class="text-white/50">© 2026 - Site demo feito com ❤️ para a Nação Rubro-Negra</p>
-            <p class="text-xs text-white/30 mt-6">
-                Este é um site estático para GitHub Pages.<br>
-                Coloque a imagem do mascote como <strong>mascote.png</strong> na mesma pasta do index.html
-            </p>
-            <div class="flex justify-center gap-6 mt-8 text-3xl">
-                🔴 ⚫ 🦅
-            </div>
-        </div>
-    </footer>
+function sendMessage(){
+  const text = chatInput.value.trim();
+  if(!text) return;
 
-    <script>
-        // Configuração Tailwind
-        function initializeTailwind() {
-            return {
-                config(userConfig = {}) {
-                    return {
-                        content: [],
-                        theme: {
-                            extend: {
-                                colors: {
-                                    flamengo: '#C8102E'
-                                }
-                            }
-                        },
-                        plugins: [],
-                        ...userConfig,
-                    }
-                },
-                theme(userTheme = {}) {
-                    return {
-                        ...this.defaultTheme(),
-                        ...userTheme,
-                    }
-                },
-                defaultTheme() {
-                    return {
-                        extend: {},
-                    }
-                },
-            }
-        }
-        
-        // Inicializa Tailwind
-        document.addEventListener('DOMContentLoaded', () => {
-            return initializeTailwind().config()
-        })
-        
-        // Função do Chat Bot
-        let chatOpen = false
-        
-        function toggleChat() {
-            const backdrop = document.getElementById('chat-backdrop')
-            chatOpen = !chatOpen
-            if (chatOpen) {
-                backdrop.classList.remove('hidden')
-                backdrop.classList.add('flex')
-            } else {
-                backdrop.classList.add('hidden')
-                backdrop.classList.remove('flex')
-            }
-        }
-        
-        function sendMessage() {
-            const input = document.getElementById('chat-input')
-            const messagesContainer = document.getElementById('chat-messages')
-            const text = input.value.trim()
-            
-            if (!text) return
-            
-            // Mensagem do usuário
-            const userDiv = document.createElement('div')
-            userDiv.className = 'user-msg message ml-auto'
-            userDiv.textContent = text
-            messagesContainer.appendChild(userDiv)
-            
-            // Limpa input
-            input.value = ''
-            
-            // Scroll automático
-            messagesContainer.scrollTop = messagesContainer.scrollHeight
-            
-            // Resposta do Mascote (fake)
-            setTimeout(() => {
-                const responses = [
-                    "🔥 MENGÃO NA VEIA! Esse é o espírito!",
-                    "🦅 Eu tô aqui voando alto com essa pergunta! O Flamengo é o maior!",
-                    "⚫🔴 Golaço! Quer saber sobre o próximo jogo? Pedro vai detonar de novo!",
-                    "Hahaha, Nação Rubro-Negra é assim mesmo! Qual é o seu jogador favorito?",
-                    "O Maracanã é nosso! Vamos ganhar tudo em 2026!",
-                    "Você é craque demais por falar com o Mascote! ❤️"
-                ]
-                
-                const randomResponse = responses[Math.floor(Math.random() * responses.length)]
-                
-                const botDiv = document.createElement('div')
-                botDiv.className = 'bot-msg message'
-                botDiv.innerHTML = randomResponse
-                messagesContainer.appendChild(botDiv)
-                
-                messagesContainer.scrollTop = messagesContainer.scrollHeight
-            }, 800)
-        }
-        
-        // Rolagem automática do ticker já está no CSS
-        console.log('%c✅ Site do Flamengo carregado com sucesso! Mascote, chat fake e 3 notícias em cards + rolagem automática ativados.', 'color:#C8102E; font-size:16px; font-weight:bold')
-    </script>
-</body>
-</html>
+  addMessage('user', text);
+  chatInput.value = '';
+
+  setTimeout(()=>{
+    addMessage('agent', responder(text));
+  },600);
+}
+
+function addMessage(type, text){
+  const div = document.createElement('div');
+  div.className = `msg ${type}`;
+  div.innerHTML = `<div>${text}</div>`;
+  chatBody.appendChild(div);
+  chatBody.scrollTop = chatBody.scrollHeight;
+}
+
+/* IA LOCAL MAIS INTELIGENTE */
+function responder(msg){
+  msg = msg.toLowerCase();
+
+  if(msg.includes("oi") || msg.includes("ola"))
+    return "Fala torcedor 🔴⚫🔥";
+
+  if(msg.includes("noticia"))
+    return "As últimas notícias já estão ali em cima 📰";
+
+  if(msg.includes("titulo"))
+    return "O Flamengo é um dos maiores campeões do Brasil 🔥🏆";
+
+  if(msg.includes("jogo"))
+    return "O Mengão sempre entra pra vencer 🔴⚫💪";
+
+  if(msg.includes("gol"))
+    return "GOOOOOOOL DO MENGÃO 🔥🔥🔥";
+
+  if(msg.includes("time"))
+    return "Elenco forte demais 🔴⚫";
+
+  if(msg.includes("historia"))
+    return "Flamengo tem uma história gigante no futebol mundial 🔥";
+
+  if(msg.includes("tchau"))
+    return "Valeu torcedor! 🔴⚫";
+
+  const respostas = [
+    "Pergunta sobre o Mengão 🔴⚫",
+    "Não entendi, mas o Flamengo é gigante 🔥",
+    "Manda outra pergunta aí 😎",
+    "O Mengão nunca decepciona 🔴⚫🔥"
+  ];
+
+  return respostas[Math.floor(Math.random() * respostas.length)];
+}
+
+/* =========================
+   🚀 INIT
+========================= */
+carregarNoticias();
+</script>
