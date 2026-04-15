@@ -3,81 +3,284 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Notícias do Flamengo</title>
+<title>Site Flamengo 🔴⚫</title>
 
 <style>
-body{
+/* === RESET & BASE === */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: Arial, sans-serif;
   background:#111;
   color:#fff;
-  font-family:Arial;
-  text-align:center;
 }
 
-h1{
-  color:red;
-}
-
-#news{
-  margin-top:20px;
-}
-
-.card{
-  background:#222;
-  margin:10px;
+/* HEADER */
+.header {
+  background:#c8102e;
   padding:15px;
-  border-radius:10px;
+  text-align:center;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.5);
 }
 
-a{
-  color:#ff4444;
-  text-decoration:none;
+/* HERO */
+.hero {
+  text-align:center;
+  padding:40px 20px;
+  background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://source.unsplash.com/1600x900/?flamengo');
+  background-size: cover;
+}
+.hero img {
+  width:180px;
+  filter: drop-shadow(0 0 10px gold);
+}
+
+/* NEWS */
+.news-section {
+  padding:20px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+.news-card {
+  background:#222;
+  padding:18px;
+  margin-bottom:15px;
+  border-left:5px solid #c8102e;
+  border-radius: 8px;
+  transition: transform 0.2s;
+}
+.news-card:hover {
+  transform: translateX(10px);
+}
+
+/* CHAT */
+.chat-toggle {
+  position:fixed;
+  bottom:20px;
+  right:20px;
+  width:65px;
+  height:65px;
+  border-radius:50%;
+  background:#c8102e;
+  color:white;
+  font-size:28px;
+  border:none;
+  box-shadow: 0 4px 15px rgba(200,16,46,0.6);
+  cursor: pointer;
+  z-index: 1000;
+}
+
+.chat-widget {
+  position:fixed;
+  bottom:90px;
+  right:20px;
+  width:320px;
+  height:460px;
+  background:#1a1a1a;
+  border-radius:12px;
+  display:none;
+  flex-direction:column;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+  overflow: hidden;
+  z-index: 1000;
+}
+
+.chat-header {
+  background:#c8102e;
+  padding:12px;
+  text-align:center;
+  font-weight:bold;
+}
+
+.chat-body {
+  flex:1;
+  overflow:auto;
+  padding:15px;
+  background:#111;
+}
+
+.msg {
+  margin:8px 0;
+  padding:10px 14px;
+  border-radius:18px;
+  max-width:85%;
+  line-height:1.4;
+}
+.msg.user {
+  background:#c8102e;
+  align-self: flex-end;
+  margin-left: auto;
+  border-bottom-right-radius: 4px;
+}
+.msg.bot {
+  background:#333;
+  align-self: flex-start;
+  margin-right: auto;
+  border-bottom-left-radius: 4px;
+}
+
+.chat-input {
+  display:flex;
+  padding:10px;
+  background:#222;
+  gap:8px;
+}
+.chat-input input {
+  flex:1;
+  padding:12px;
+  border:none;
+  border-radius:25px;
+  background:#333;
+  color:white;
+}
+.chat-input button {
+  background:#c8102e;
+  color:white;
+  border:none;
+  padding:0 18px;
+  border-radius:25px;
+  cursor:pointer;
 }
 </style>
 </head>
 
 <body>
 
-<h1>📰 Notícias do Flamengo</h1>
-<p id="status">Carregando...</p>
+<header class="header">
+  <h1>🔴⚫ Flamengo</h1>
+</header>
 
-<div id="news"></div>
+<section class="hero">
+  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f1/CR_Flamengo_logo.svg/512px-CR_Flamengo_logo.svg.png" alt="Logo Flamengo">
+  <h2>Bem-vindo ao Mengão!</h2>
+  <p>O Maior do Brasil 🔥</p>
+</section>
+
+<section class="news-section">
+  <h3>Últimas Notícias do Flamengo</h3>
+  <div id="newsList"></div>
+</section>
+
+<button class="chat-toggle" id="chatToggle">💬</button>
+
+<div class="chat-widget" id="chatWidget">
+  <div class="chat-header">🦅 Chat do Flamengo</div>
+  <div class="chat-body" id="chatBody"></div>
+  <div class="chat-input">
+    <input id="chatInput" placeholder="Pergunte sobre o Flamengo..." autocomplete="off">
+    <button id="btnSend">Enviar</button>
+  </div>
+</div>
 
 <script>
-async function carregarNoticias(){
-  try{
-    const url = "https://api.allorigins.win/raw?url=https://globoesporte.globo.com/rss/futebol/times/flamengo/";
-
-    const res = await fetch(url);
-    const text = await res.text();
-
-    const parser = new DOMParser();
-    const xml = parser.parseFromString(text, "text/xml");
-
-    const items = xml.querySelectorAll("item");
-    const newsDiv = document.getElementById("news");
-
-    document.getElementById("status").innerText = "";
-
-    items.forEach((item, i) => {
-      if(i < 3){
-        const title = item.querySelector("title").textContent;
-        const link = item.querySelector("link").textContent;
-
-        newsDiv.innerHTML += `
-          <div class="card">
-            <h3>${title}</h3>
-            <a href="${link}" target="_blank">Ler mais</a>
-          </div>
-        `;
-      }
-    });
-
-  }catch(e){
-    document.getElementById("status").innerText = "Erro ao carregar notícias 😡";
+// ==================== NOTÍCIAS ====================
+const noticias = [
+  {
+    titulo: "Flamengo vence o Fluminense e assume a liderança do Carioca",
+    texto: "Em clássico disputado no Maracanã, o Mengão venceu por 2x1 com gols de Pedro e Arrascaeta. Ótima atuação do time!",
+    data: "Há 2 horas"
+  },
+  {
+    titulo: "Tite elogia garotos da base: 'São o futuro do clube'",
+    texto: "Após vitória, o técnico Tite destacou o desempenho de jovens como Lorran e Matheus Gonçalves.",
+    data: "Há 5 horas"
+  },
+  {
+    titulo: "Flamengo anuncia renovação de contrato com Giorgian de Arrascaeta",
+    texto: "O uruguaio, ídolo da torcida, assinou até dezembro de 2028. Valorização merecida!",
+    data: "Ontem"
   }
+];
+
+const newsList = document.getElementById('newsList');
+
+noticias.forEach(noticia => {
+  const card = document.createElement("div");
+  card.className = "news-card";
+  card.innerHTML = `
+    <small style="color:#c8102e">${noticia.data}</small>
+    <h4>${noticia.titulo}</h4>
+    <p>${noticia.texto}</p>
+  `;
+  newsList.appendChild(card);
+});
+
+// ==================== CHAT INTELIGENTE ====================
+const chatToggle = document.getElementById('chatToggle');
+const chatWidget = document.getElementById('chatWidget');
+const chatBody = document.getElementById('chatBody');
+const chatInput = document.getElementById('chatInput');
+const btnSend = document.getElementById('btnSend');
+
+chatToggle.onclick = () => {
+  chatWidget.style.display = chatWidget.style.display === 'flex' ? 'none' : 'flex';
+  if (chatWidget.style.display === 'flex') chatInput.focus();
 }
 
-carregarNoticias();
+// Respostas inteligentes do Bot
+function getBotResponse(texto) {
+  const msg = texto.toLowerCase();
+
+  if (msg.includes("oi") || msg.includes("olá") || msg.includes("boa")) 
+    return "Olá, Mengão! Como vai, nação rubro-negra? 🔥";
+
+  if (msg.includes("noticia") || msg.includes("notícia"))
+    return "Temos várias notícias quentes hoje! Quer que eu te conte as últimas?";
+
+  if (msg.includes("melhor") || msg.includes("maior"))
+    return "O Flamengo é o maior clube do Brasil e da América Latina! Nação gigante! 🔴⚫";
+
+  if (msg.includes("título") || msg.includes("libertadores") || msg.includes("brasileirão"))
+    return "O Mengão já conquistou 3 Libertadores, 7 Brasileirões e é o clube com mais torcedores do Brasil!";
+
+  if (msg.includes("pedro") || msg.includes("arrascaeta") || msg.includes("de la cruz"))
+    return "Pedro e Arrascaeta são monstros! Ídolos absolutos da torcida.";
+
+  if (msg.includes("tite"))
+    return "Tite é o nosso treinador atual. Tem feito um ótimo trabalho com o elenco.";
+
+  if (msg.includes("maracanã"))
+    return "O Maracanã é a nossa casa! Onde o Flamengo faz a torcida vibrar!";
+
+  return "Flamengo é gigante, irmão! 🔴⚫ O que mais você quer saber sobre o Mengão?";
+}
+
+function addMsg(text, isUser = false) {
+  const div = document.createElement("div");
+  div.className = `msg ${isUser ? 'user' : 'bot'}`;
+  div.innerText = text;
+  chatBody.appendChild(div);
+  chatBody.scrollTop = chatBody.scrollHeight;
+}
+
+// Enviar mensagem
+function sendMessage() {
+  const text = chatInput.value.trim();
+  if (!text) return;
+
+  addMsg(text, true);
+
+  // Resposta do bot com pequeno delay (mais natural)
+  setTimeout(() => {
+    const resposta = getBotResponse(text);
+    addMsg(resposta);
+  }, 600);
+
+  chatInput.value = "";
+}
+
+// Eventos
+btnSend.onclick = sendMessage;
+
+chatInput.addEventListener("keypress", (e) => {
+  if (e.key === "Enter") sendMessage();
+});
+
+// Mensagem inicial do bot
+window.onload = () => {
+  setTimeout(() => {
+    addMsg("Bem-vindo ao Chat do Flamengo! 💬\nPergunte qualquer coisa sobre o Mengão!");
+  }, 800);
+}
 </script>
 
 </body>
