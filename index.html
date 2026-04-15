@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Flamengo Notícias</title>
+<title>Notícias do Flamengo</title>
 
 <style>
 body{
@@ -14,170 +14,99 @@ body{
   padding:20px;
 }
 
-h2{
+h1{
+  color:red;
+}
+
+#newsList{
+  margin-top:20px;
+}
+
+.news-item{
+  margin-bottom:15px;
+  padding:10px;
+  border-bottom:1px solid #333;
+}
+
+.news-item a{
   color:#ff0000;
-}
-
-/* NOTÍCIAS */
-.news-card{
-  background:#1c1c1c;
-  padding:10px;
-  margin-bottom:10px;
-  border-radius:8px;
-}
-
-.news-card a{
-  color:#ff4444;
   text-decoration:none;
+  font-size:16px;
 }
 
-/* CHAT */
-#chatWidget{
-  position:fixed;
-  bottom:10px;
-  right:10px;
-  width:260px;
-  background:#000;
-  border-radius:10px;
-  overflow:hidden;
+.chat-box{
+  margin-top:30px;
   border:1px solid #333;
-}
-
-#chatBody{
-  height:200px;
-  overflow:auto;
+  border-radius:10px;
   padding:10px;
-  font-size:14px;
 }
 
-.msg{
-  margin:5px 0;
-}
-
-.msg.user{
-  text-align:right;
-}
-
-.msg.agent{
-  text-align:left;
-}
-
-#chatInput{
-  width:65%;
-  padding:5px;
+input{
+  width:70%;
+  padding:10px;
   border:none;
 }
 
-#btnSend{
-  width:30%;
-  background:#ff0000;
+button{
+  padding:10px;
+  background:red;
   color:#fff;
   border:none;
-  padding:5px;
 }
 </style>
 </head>
 
 <body>
 
-<h2>📰 Notícias do Flamengo</h2>
+<h1>📰 Notícias do Flamengo</h1>
+
 <div id="newsList">Carregando...</div>
 
-<!-- CHAT -->
-<div id="chatWidget">
-  <div id="chatBody"></div>
-  <input id="chatInput" placeholder="Pergunta..." />
-  <button id="btnSend">Enviar</button>
+<div class="chat-box">
+  <input type="text" placeholder="Pergunta...">
+  <button>Enviar</button>
 </div>
 
 <script>
-const chatBody    = document.getElementById('chatBody');
-const chatInput   = document.getElementById('chatInput');
-const btnSend     = document.getElementById('btnSend');
-const newsList    = document.getElementById('newsList');
+const newsList = document.getElementById("newsList");
 
-/* NOTÍCIAS - API FUNCIONAL */
 async function carregarNoticias() {
   try {
-    const res = await fetch("https://api.allorigins.win/raw?url=" + encodeURIComponent(
-      "https://news.google.com/rss/search?q=flamengo&hl=pt-BR&gl=BR&ceid=BR:pt-419"
-    ));
+    const url = "https://api.allorigins.win/get?url=" + encodeURIComponent(
+      "https://news.google.com/rss/search?q=Flamengo&hl=pt-BR&gl=BR&ceid=BR:pt-419"
+    );
 
-    const text = await res.text();
+    const res = await fetch(url);
+    const data = await res.json();
+
     const parser = new DOMParser();
-    const xml = parser.parseFromString(text, "text/xml");
+    const xml = parser.parseFromString(data.contents, "text/xml");
 
     const items = xml.querySelectorAll("item");
 
-    let html = "";
+    newsList.innerHTML = "";
 
     items.forEach((item, i) => {
-      if(i >= 3) return;
+      if (i >= 3) return;
 
-      const title = item.querySelector("title").textContent;
+      const titulo = item.querySelector("title").textContent;
       const link = item.querySelector("link").textContent;
 
-      html += `
-        <div class="news-card">
-          <h4>${title}</h4>
-          <a href="${link}" target="_blank">Ler mais</a>
-        </div>
+      const div = document.createElement("div");
+      div.className = "news-item";
+      div.innerHTML = `
+        <a href="${link}" target="_blank">${titulo}</a>
       `;
+
+      newsList.appendChild(div);
     });
 
-    newsList.innerHTML = html || "Nenhuma notícia encontrada";
-
-  } catch (err) {
-    newsList.innerHTML = "Erro ao carregar notícias";
-    console.error(err);
+  } catch (erro) {
+    newsList.innerHTML = "Erro ao carregar notícias 😢";
+    console.error(erro);
   }
 }
 
-/* CHAT MELHORADO */
-btnSend.onclick = enviar;
-chatInput.addEventListener("keypress", e => {
-  if(e.key === "Enter") enviar();
-});
-
-function enviar(){
-  const text = chatInput.value.trim();
-  if(!text) return;
-
-  addMessage('user', text);
-  chatInput.value = '';
-
-  setTimeout(()=>{
-    addMessage('agent', responder(text));
-  },400);
-}
-
-function addMessage(type, text){
-  const div = document.createElement('div');
-  div.className = `msg ${type}`;
-  div.innerText = text;
-  chatBody.appendChild(div);
-  chatBody.scrollTop = chatBody.scrollHeight;
-}
-
-function responder(msg){
-  msg = msg.toLowerCase();
-
-  if(msg.includes("oi") || msg.includes("fala"))
-    return "Fala torcedor 🔴⚫";
-
-  if(msg.includes("gol"))
-    return "GOOOOOOL DO MENGÃO 🔥🔥🔥";
-
-  if(msg.includes("flamengo"))
-    return "Maior do Brasil, respeita 🔴⚫";
-
-  if(msg.includes("notícia"))
-    return "As últimas estão ali em cima 👆";
-
-  return "Pergunta sobre o Mengão 😎";
-}
-
-/* INIT */
 carregarNoticias();
 </script>
 
