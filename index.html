@@ -1,204 +1,3 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Site Flamengo 🔴⚫</title>
-
-<style>
-/* === RESET & BASE === */
-*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-body {
-  font-family: Arial, sans-serif;
-  background:#111;
-  color:#fff;
-}
-
-/* HEADER */
-.header {
-  background:#c8102e;
-  padding:15px;
-  text-align:center;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.5);
-}
-
-/* HERO */
-.hero {
-  text-align:center;
-  padding:50px 20px;
-  background: linear-gradient(rgba(0,0,0,0.75), rgba(0,0,0,0.75)), #000;
-  background-size: cover;
-  position: relative;
-}
-.hero img.logo {
-  width: 180px;
-  margin-bottom: 15px;
-}
-.hero img.mascote {
-  width: 220px;
-  margin: 20px 0;
-  filter: drop-shadow(0 10px 15px rgba(200, 16, 46, 0.6));
-}
-
-/* NEWS */
-.news-section {
-  padding:30px 20px;
-  max-width: 900px;
-  margin: 0 auto;
-}
-.news-card {
-  background:#222;
-  padding:18px;
-  margin-bottom:15px;
-  border-left:5px solid #c8102e;
-  border-radius: 8px;
-  transition: all 0.3s;
-}
-.news-card:hover {
-  transform: translateX(10px);
-  box-shadow: 0 5px 15px rgba(200,16,46,0.3);
-}
-
-/* BOTÕES FLUTUANTES */
-.btn-fixo {
-  position:fixed;
-  bottom:20px;
-  width:65px;
-  height:65px;
-  border-radius:50%;
-  border:none;
-  font-size:28px;
-  box-shadow: 0 5px 20px rgba(0,0,0,0.7);
-  cursor: pointer;
-  z-index: 1000;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-decoration: none;
-}
-
-#chatToggle {
-  background:#c8102e;
-  color:white;
-  right: 100px;
-}
-
-#ingressoBtn {
-  background:#009c3b;
-  color:white;
-  right: 20px;
-  font-size: 24px;
-}
-
-/* CHAT */
-.chat-widget {
-  position:fixed;
-  bottom:90px;
-  right:20px;
-  width:320px;
-  height:460px;
-  background:#1a1a1a;
-  border-radius:12px;
-  display:none;
-  flex-direction:column;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.8);
-  overflow: hidden;
-  z-index: 1001;
-}
-
-.chat-header {
-  background:#c8102e;
-  padding:12px;
-  text-align:center;
-  font-weight:bold;
-}
-
-.chat-body {
-  flex:1;
-  overflow:auto;
-  padding:15px;
-  background:#111;
-}
-
-.msg {
-  margin:8px 0;
-  padding:10px 14px;
-  border-radius:18px;
-  max-width:85%;
-  line-height:1.4;
-}
-.msg.user {
-  background:#c8102e;
-  margin-left: auto;
-  border-bottom-right-radius: 4px;
-}
-.msg.bot {
-  background:#333;
-  margin-right: auto;
-  border-bottom-left-radius: 4px;
-}
-
-.chat-input {
-  display:flex;
-  padding:10px;
-  background:#222;
-  gap:8px;
-}
-.chat-input input {
-  flex:1;
-  padding:12px;
-  border:none;
-  border-radius:25px;
-  background:#333;
-  color:white;
-}
-.chat-input button {
-  background:#c8102e;
-  color:white;
-  border:none;
-  padding:0 18px;
-  border-radius:25px;
-  cursor:pointer;
-}
-</style>
-</head>
-
-<body>
-
-<header class="header">
-  <h1>🔴⚫ Flamengo</h1>
-</header>
-
-<section class="hero">
-  <img src="mascote.png" alt="Mascote Flamengo" class="mascote">
-  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f1/CR_Flamengo_logo.svg/512px-CR_Flamengo_logo.svg.png" alt="Logo Flamengo" class="logo">
-  <h2>Bem-vindo ao Mengão!</h2>
-  <p>O Maior do Brasil 🔥</p>
-</section>
-
-<section class="news-section">
-  <h3>Últimas Notícias do Flamengo</h3>
-  <div id="newsList"></div>
-</section>
-
-<!-- Botão Comprar Ingresso -->
-<a href="https://www.flamengo.com.br/ingressos" target="_blank" id="ingressoBtn" class="btn-fixo" title="Comprar Ingresso">
-  🎟️
-</a>
-
-<!-- Botão Chat -->
-<button class="btn-fixo" id="chatToggle">💬</button>
-
-<!-- Chat Widget -->
-<div class="chat-widget" id="chatWidget">
-  <div class="chat-header">🦅 Chat do Flamengo</div>
-  <div class="chat-body" id="chatBody"></div>
-  <div class="chat-input">
-    <input id="chatInput" placeholder="Pergunte sobre o Flamengo..." autocomplete="off">
-    <button id="btnSend">Enviar</button>
-  </div>
-</div>
-
 <script>
 // ==================== NOTÍCIAS ====================
 const noticias = [
@@ -220,7 +19,6 @@ const noticias = [
 ];
 
 const newsList = document.getElementById('newsList');
-
 noticias.forEach(noticia => {
   const card = document.createElement("div");
   card.className = "news-card";
@@ -232,73 +30,124 @@ noticias.forEach(noticia => {
   newsList.appendChild(card);
 });
 
-// ==================== CHAT INTELIGENTE ====================
+// ==================== CHAT INTELIGENTE V2 ====================
 const chatToggle = document.getElementById('chatToggle');
 const chatWidget = document.getElementById('chatWidget');
 const chatBody = document.getElementById('chatBody');
 const chatInput = document.getElementById('chatInput');
 const btnSend = document.getElementById('btnSend');
 
+// Base de conhecimento do bot
+const knowledge = [
+  {
+    keys: ['oi', 'ola', 'olá', 'eai', 'salve', 'boa'],
+    answer: 'Salve, nação! 🔴⚫ Tudo certo? Manda a braba aí, o que quer saber do Mengão?',
+    sugestoes: ['Próximo jogo', 'Elenco atual', 'Títulos']
+  },
+  {
+    keys: ['jogo', 'jogar', 'partida', 'quando', 'proximo', 'próximo', 'hoje'],
+    answer: 'O próximo jogo do Mengão é contra o Vasco, domingo 16h no Maracanã pelo Brasileirão! Já garantiu seu ingresso? 🎟️',
+    sugestoes: ['Comprar ingresso', 'Escalação', 'Onde assistir']
+  },
+  {
+    keys: ['ingresso', 'comprar', 'bilhete', 'ticket'],
+    answer: 'Pra comprar ingresso é fácil: clica no botão verde 🎟️ aqui na tela ou vai em flamengo.com.br/ingressos. Sócio-torcedor tem desconto!',
+    sugestoes: ['Ser sócio-torcedor', 'Preço dos ingressos']
+  },
+  {
+    keys: ['pedro', 'artilheiro', 'gol', 'gols'],
+    answer: 'Pedro, o artilheiro! ⚽ Já são 15 gols na temporada. O cara é decisivo demais!',
+    sugestoes: ['Arrascaeta', 'Gabigol', 'Estatísticas']
+  },
+  {
+    keys: ['arrascaeta', 'arrasca', 'uruguaio', '10', 'camisa 10'],
+    answer: 'Arrascaeta, o maestro! 🇺🇾 Camisa 10 do Mengão, acabou de renovar até 2028. Craque demais!',
+    sugestoes: ['Pedro', 'Gerson', 'Elenco completo']
+  },
+  {
+    keys: ['tite', 'tecnico', 'técnico', 'treinador'],
+    answer: 'Tite comanda o Mengão desde 2023. Ex-Seleção, chegou pra colocar ordem na casa e buscar títulos!',
+    sugestoes: ['Títulos do Tite', 'Esquema tático']
+  },
+  {
+    keys: ['titulo', 'títulos', 'campeao', 'campeão', 'libertadores', 'mundial'],
+    answer: 'O Mengão é gigante: 3 Libertadores 81/19/22, 1 Mundial 81, 8 Brasileiros, 4 Copas do Brasil. É o maior! 🏆',
+    sugestoes: ['Maior ídolo', 'Hino do Flamengo']
+  },
+  {
+    keys: ['elenco', 'time', 'jogador', 'plantel'],
+    answer: 'Elenco estrelado: Rossi, Wesley, Léo Pereira, Ayrton Lucas, Gerson, Pulgar, De La Cruz, Arrascaeta, Everton Cebolinha, Bruno Henrique, Pedro, Gabigol...',
+    sugestoes: ['Escalação titular', 'Contratações']
+  },
+  {
+    keys: ['maracana', 'maracanã', 'estadio', 'estádio', 'casa'],
+    answer: 'O Maracanã é a nossa casa! Maior estádio do Brasil, palco de 2 finais de Copa do Mundo. Quando o Mengão joga lá, vira um caldeirão! 🏟️',
+    sugestoes: ['Capacidade', 'Como chegar']
+  },
+  {
+    keys: ['hino', 'cantar', 'letra'],
+    answer: 'Uma vez Flamengo, sempre Flamengo! Flamengo sempre eu hei de ser... É meu maior prazer vê-lo brilhar! 🎵',
+    sugestoes: ['História do clube', 'Mascote']
+  },
+  {
+    keys: ['mascote', 'urubu', 'ave'],
+    answer: 'Nosso mascote é o Urubu! 🦅 Surgiu em 1969 quando a torcida respondeu aos rivais. Virou símbolo de raça!',
+    sugestoes: ['História do urubu', 'Apelidos']
+  },
+  {
+    keys: ['socio', 'sócio', 'nrn', 'nacao', 'nação'],
+    answer: 'Seja Sócio-Torcedor do Nação! Tem desconto em ingresso, prioridade na compra e ajuda o clube. Vale muito a pena!',
+    sugestoes: ['Comprar ingresso', 'Planos do NRN']
+  }
+];
+
+let historicoPerguntas = [];
+
 chatToggle.onclick = () => {
   chatWidget.style.display = (chatWidget.style.display === 'flex') ? 'none' : 'flex';
   if (chatWidget.style.display === 'flex') chatInput.focus();
 }
 
-function getBotResponse(texto) {
-  const msg = texto.toLowerCase();
-
-  if (msg.includes("oi") || msg.includes("olá") || msg.includes("boa")) 
-    return "Olá, nação rubro-negra! Tudo bem? Como posso ajudar hoje? 🔥";
-
-  if (msg.includes("noticia") || msg.includes("notícia"))
-    return "Temos várias notícias quentes! Quer que eu te conte as últimas do Mengão?";
-
-  if (msg.includes("melhor") || msg.includes("maior"))
-    return "O Flamengo é o maior clube do Brasil e da América! Nação gigante! 🔴⚫";
-
-  if (msg.includes("ingresso") || msg.includes("comprar"))
-    return "Para comprar ingressos, clique no botão verde 🎟️ que está na tela!";
-
-  if (msg.includes("pedro") || msg.includes("arrascaeta"))
-    return "Pedro e Arrascaeta são monstros sagrados do Mengão!";
-
-  return "Flamengo é gigante, irmão! 🔴⚫ O que mais você quer saber sobre o nosso time?";
+function normalizar(texto) {
+  return texto.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
 }
 
-function addMsg(text, isUser = false) {
+function encontrarResposta(texto) {
+  const msg = normalizar(texto);
+  
+  // Procura a melhor resposta na base
+  for (const item of knowledge) {
+    if (item.keys.some(key => msg.includes(normalizar(key)))) {
+      return item;
+    }
+  }
+  
+  // Resposta padrão se não achar
+  return {
+    answer: 'Ih, não achei isso na minha base agora 😅 Mas posso falar sobre jogos, elenco, títulos, ingressos...',
+    sugestoes: ['Próximo jogo', 'Títulos', 'Elenco atual', 'Comprar ingresso']
+  };
+}
+
+function addMsg(text, isUser = false, sugestoes = []) {
   const div = document.createElement("div");
-  div.className = `msg ${isUser ? 'user' : 'bot'}`;
+  div.className = `msg ${isUser? 'user' : 'bot'}`;
   div.innerText = text;
   chatBody.appendChild(div);
-  chatBody.scrollTop = chatBody.scrollHeight;
-}
-
-function sendMessage() {
-  const text = chatInput.value.trim();
-  if (!text) return;
-
-  addMsg(text, true);
-
-  setTimeout(() => {
-    const resposta = getBotResponse(text);
-    addMsg(resposta);
-  }, 600);
-
-  chatInput.value = "";
-}
-
-btnSend.onclick = sendMessage;
-chatInput.addEventListener("keypress", (e) => {
-  if (e.key === "Enter") sendMessage();
-});
-
-// Mensagem inicial do chat
-window.onload = () => {
-  setTimeout(() => {
-    addMsg("Bem-vindo ao Chat do Flamengo! 💬\nPode perguntar qualquer coisa sobre o Mengão!");
-  }, 800);
-}
-</script>
-
-</body>
-</html>
+  
+  // Adiciona botões de sugestão
+  if (sugestoes.length > 0 &&!isUser) {
+    const sugestaoDiv = document.createElement("div");
+    sugestaoDiv.style.cssText = "margin: 5px 0 10px 0; display: flex; flex-wrap: wrap; gap: 6px;";
+    
+    sugestoes.forEach(s => {
+      const btn = document.createElement("button");
+      btn.innerText = s;
+      btn.style.cssText = "background:#333; color:#fff; border:1px solid #c8102e; padding:6px 12px; border-radius:15px; font-size:12px; cursor:pointer;";
+      btn.onclick = () => {
+        chatInput.value = s;
+        sendMessage();
+      };
+      sugestaoDiv.appendChild(btn);
+    });
+    chatBody.append
