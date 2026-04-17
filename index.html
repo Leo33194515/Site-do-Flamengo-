@@ -204,9 +204,9 @@ body {
 // ==================== NOTÍCIAS ====================
 const noticias = [
   {
-    titulo: "Flamengo vence o Fluminense e assume a liderança do Carioca",
-    texto: "Em clássico disputado no Maracanã, o Mengão venceu por 2x1 com gols de Pedro e Arrascaeta.",
-    data: "Há 2 horas"
+    titulo: "Flamengo vence o Fluminense por 2 a 1 no Brasileirão",
+    texto: "Em clássico disputado no Maracanã, o Mengão venceu o Flu por 2x1 com gols de Pedro (dois vezes). Vitória importante na tabela do Campeonato Brasileiro!",
+    data: "Há 5 dias"
   },
   {
     titulo: "Tite elogia garotos da base: 'São o futuro do clube'",
@@ -309,111 +309,4 @@ const knowledge = [
   {
     keys: ['hino', 'cantar', 'letra'],
     answer: 'Uma vez Flamengo, sempre Flamengo! Flamengo sempre eu hei de ser... É meu maior prazer vê-lo brilhar! Uma vez Flamengo, Flamengo até morrer! 🎵',
-    sugestoes: ['História do clube', 'Mascote', 'Torcida']
-  },
-  {
-    keys: ['mascote', 'urubu', 'ave', 'por que urubu'],
-    answer: 'Nosso mascote é o Urubu! 🦅 Em 1969 a torcida rival chamou de "urubu". A Nação respondeu: "Urubu é raça!" e adotou. Virou símbolo!',
-    sugestoes: ['História do clube', 'Apelidos', 'Torcida']
-  },
-  {
-    keys: ['socio', 'sócio', 'nrn', 'nacao', 'nação'],
-    answer: 'Seja Sócio-Torcedor do Nação! Tem desconto em ingresso, prioridade na compra e ajuda o clube. Planos a partir de R$25/mês.',
-    sugestoes: ['Comprar ingresso', 'Benefícios', 'Site oficial']
-  }
-];
-
-chatToggle.onclick = () => {
-  chatWidget.style.display = (chatWidget.style.display === 'flex') ? 'none' : 'flex';
-  if (chatWidget.style.display === 'flex') chatInput.focus();
-}
-
-function normalizar(texto) {
-  return texto.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-}
-
-function encontrarResposta(texto) {
-  const msg = normalizar(texto);
-  
-  for (const item of knowledge) {
-    if (item.keys.some(key => msg.includes(normalizar(key)))) {
-      return item;
-    }
-  }
-  
-  return {
-    answer: 'Ih, não achei isso na minha base agora 😅 Mas posso falar sobre jogos, elenco, títulos, ingressos...',
-    sugestoes: ['Próximo jogo', 'Títulos', 'Elenco atual', 'Comprar ingresso']
-  };
-}
-
-function addMsg(text, isUser = false, sugestoes = []) {
-  const div = document.createElement("div");
-  div.className = `msg ${isUser? 'user' : 'bot'}`;
-  div.innerText = text;
-  chatBody.appendChild(div);
-  
-  if (sugestoes.length > 0 &&!isUser) {
-    const sugestaoDiv = document.createElement("div");
-    sugestaoDiv.style.cssText = "margin: 5px 0 10px 0; display: flex; flex-wrap: wrap; gap: 6px;";
-    
-    sugestoes.forEach(s => {
-      const btn = document.createElement("button");
-      btn.innerText = s;
-      btn.style.cssText = "background:#333; color:#fff; border:1px solid #c8102e; padding:6px 12px; border-radius:15px; font-size:12px; cursor:pointer;";
-      btn.onclick = () => {
-        chatInput.value = s;
-        sendMessage();
-      };
-      sugestaoDiv.appendChild(btn);
-    });
-    chatBody.appendChild(sugestaoDiv);
-  }
-  
-  chatBody.scrollTop = chatBody.scrollHeight;
-}
-
-function showTyping() {
-  const div = document.createElement("div");
-  div.className = 'msg bot';
-  div.id = 'typing';
-  div.innerText = '...';
-  chatBody.appendChild(div);
-  chatBody.scrollTop = chatBody.scrollHeight;
-}
-
-function hideTyping() {
-  document.getElementById('typing')?.remove();
-}
-
-function sendMessage() {
-  const text = chatInput.value.trim();
-  if (!text) return;
-  
-  addMsg(text, true);
-  chatInput.value = "";
-  
-  showTyping();
-  
-  setTimeout(() => {
-    hideTyping();
-    const resposta = encontrarResposta(text);
-    addMsg(resposta.answer, false, resposta.sugestoes);
-  }, 800);
-}
-
-btnSend.onclick = sendMessage;
-chatInput.addEventListener("keypress", (e) => {
-  if (e.key === "Enter") sendMessage();
-});
-
-// Mensagem inicial
-window.onload = () => {
-  setTimeout(() => {
-    addMsg("Salve, Nação! 🦅 Sou o bot do Mengão. Pergunta o que quiser!", false, ['Próximo jogo', 'Títulos', 'Comprar ingresso']);
-  }, 800);
-}
-</script>
-
-</body>
-</html>
+    sugestoes: ['História do clube', 'Mascote',
